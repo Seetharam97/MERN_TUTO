@@ -5,6 +5,8 @@ const productSchema = require("../models/product.model");
 const userSchema = require("../models/users.model");
 const categorySchema = require("../models/category.model")
 const {authVerify, isAdmin} = require("../middleware/auth");
+const {sendNotification} = require("../middleware/notification")
+const notificationMessage = require("../utils/notifictionMessage.json")
 
 // add product api for admin
 router.post('/addProduct', authVerify, async(req,res)=>{
@@ -12,6 +14,17 @@ router.post('/addProduct', authVerify, async(req,res)=>{
         let detail = req.body
         const data = new productSchema(detail);
         const result = await data.save();
+        let message = {
+            notification:{
+                title: detail.productName,
+                message: `${detail.productName} ${notificationMessage.addproduct}`,
+                bodyMessage: `${detail.productName} ${notificationMessage.addproduct}`
+            }
+        } 
+        
+        // let message = {
+        await sendNotification(message)
+
         return res.status(200).json({'status': 'success', "message": "Product details added successfully", "result": result})
     }catch(error){
         console.log(error.message);

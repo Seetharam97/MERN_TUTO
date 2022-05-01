@@ -122,16 +122,16 @@ router.post("/mailSendingApi", async(req, res)=>{
         const toMail = req.body.toMail;
         const subject = req.body.subject;        
         const mailData = {
-            from: "snowbellplanet@gmail.com",
+            from: "seetharaman1020@gmail.com",
             to: toMail,
             subject: subject,
             fileName: 'confirmationEmail.ejs',
-            attachments:[
-                {
-                    filename: 'mayamaan.pdf',
-                    filePath:"/home/user/Documents/Books/mayamaan.pdf"                    
-                }
-            ],
+            // attachments:[
+            //     {
+            //         filename: 'mayamaan.pdf',
+            //         filePath:"/home/user/Documents/Books/mayamaan.pdf"                    
+            //     }
+            // ],
             details:{
                 name: "Seetharam",
                 date: new Date(),
@@ -139,6 +139,7 @@ router.post("/mailSendingApi", async(req, res)=>{
             }
         }
         await mailSending.mailSending(mailData).then(data=>{
+        // await mailSending.sendMailSending(mailData).then(data=>{
             return res.status(200).json({status: "success", message: "Mail sent successfully"}) 
         }).catch((error)=>{
             return res.status(400).json({status: "failure", message: "Mail sent failed"})
